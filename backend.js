@@ -15,24 +15,11 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html')
 })
 
-const { RectCollider, CircleCollider } = require('./public/js/classes/Collider.js')
-
 const backEndPlayers = {}
 const backEndChatMessages = {}
 const chatMessageBubbleTimers = {}
 
 const colliders = []
-colliders.push(new RectCollider(0, 0, 500, 50))
-colliders.push(new RectCollider(0, 200, 500, 50))
-colliders.push(new RectCollider(0, 600, 600, 50))
-colliders.push(new RectCollider(700, 600, 500, 50))
-colliders.push(new RectCollider(500, 400, 500, 50))
-
-colliders.push(new RectCollider(600, 0, 50, 400))
-colliders.push(new RectCollider(300, 250, 50, 200))
-colliders.push(new RectCollider(500, 650, 50, 400))
-colliders.push(new RectCollider(900, 650, 50, 400))
-colliders.push(new RectCollider(700, 750, 50, 300))
 
 const SPEED = 10
 

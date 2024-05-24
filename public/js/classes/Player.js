@@ -29,6 +29,9 @@ class Player {
                 this.angle += Math.PI * 2
             }
         }
+        if (keys.angle) {
+            this.angle = keys.angle
+        }
     }
 
     draw() {

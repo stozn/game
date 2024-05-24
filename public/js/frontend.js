@@ -20,34 +20,34 @@ const map = {
 
 const colliders = []
 colliders.push(new BorderCollider(-map.width / 2, -map.height / 2, map.width, map.height))
-colliders.push(new RectCollider(0, 0, 500, 50))
-colliders.push(new RectCollider(0, 200, 500, 50))
-colliders.push(new RectCollider(0, 600, 600, 50))
-colliders.push(new RectCollider(700, 600, 500, 50))
-colliders.push(new RectCollider(500, 400, 500, 50))
+colliders.push(new RectCollider(0, 0, 500, 20))
+colliders.push(new RectCollider(0, 200, 500, 20))
+colliders.push(new RectCollider(0, 600, 600, 20))
+colliders.push(new RectCollider(700, 600, 500, 20))
+colliders.push(new RectCollider(500, 400, 500, 20))
 
-colliders.push(new RectCollider(600, 0, 50, 400))
-colliders.push(new RectCollider(300, 250, 50, 200))
-colliders.push(new RectCollider(500, 650, 50, 400))
-colliders.push(new RectCollider(900, 650, 50, 400))
-colliders.push(new RectCollider(700, 750, 50, 300))
+colliders.push(new RectCollider(600, 0, 20, 400))
+colliders.push(new RectCollider(300, 250, 20, 200))
+colliders.push(new RectCollider(500, 650, 20, 400))
+colliders.push(new RectCollider(900, 650, 20, 400))
+colliders.push(new RectCollider(700, 750, 20, 300))
 
-colliders.push(new RectCollider(-500, 0, 500, 50))
-colliders.push(new RectCollider(-350, 400, 500, 50))
-colliders.push(new RectCollider(-550, 800, 600, 50))
-colliders.push(new RectCollider(-1200, 600, 500, 50))
-colliders.push(new RectCollider(-1000, 400, 500, 50))
+colliders.push(new RectCollider(-500, 0, 500, 20))
+colliders.push(new RectCollider(-350, 400, 500, 20))
+colliders.push(new RectCollider(-550, 800, 600, 20))
+colliders.push(new RectCollider(-1200, 600, 500, 20))
+colliders.push(new RectCollider(-1000, 400, 500, 20))
 
-colliders.push(new RectCollider(-700, 0, 50, 400))
-colliders.push(new RectCollider(-400, 250, 50, 200))
-colliders.push(new RectCollider(-600, 650, 50, 400))
-colliders.push(new RectCollider(-1000, 650, 50, 400))
-colliders.push(new RectCollider(-800, 750, 50, 300))
+colliders.push(new RectCollider(-700, 0, 20, 400))
+colliders.push(new RectCollider(-400, 250, 20, 200))
+colliders.push(new RectCollider(-600, 650, 20, 400))
+colliders.push(new RectCollider(-1000, 650, 20, 400))
+colliders.push(new RectCollider(-800, 750, 20, 300))
 
-colliders.push(new RectCollider(-200, -300, 500, 50))
-colliders.push(new RectCollider(-800, -500, 600, 50))
+colliders.push(new RectCollider(-200, -300, 500, 20))
+colliders.push(new RectCollider(-800, -500, 600, 20))
 
-colliders.push(new CircleCollider(-300, 600, 50))
+colliders.push(new CircleCollider(-300, 600, 20))
 
 
 
@@ -89,6 +89,7 @@ socket.on('updatePlayers', (backEndPlayers) => {
             keys.a.pressd = false
             keys.s.pressd = false
             keys.d.pressd = false
+            keys.angle = 0
             document.querySelector('#playerLabels').innerHTML +=
                 `<div data-id="${id}" data-score="${backEndPlayer.score}">${backEndPlayer.username}: ${backEndPlayer.score}</div>`
         } else {
@@ -214,7 +215,8 @@ const keys = {
     },
     d: {
         pressd: false
-    }
+    },
+    angle: 0
 }
 
 const SPEED = 5
@@ -230,8 +232,8 @@ setInterval(() => {
         projectile.update()
         // 边界判定（附带碰撞次数判定）
         if (projectile.x < -map.width / 2 || projectile.x > map.width / 2 || projectile.y < -map.height / 2 || projectile.y > map.height / 2 || projectile.collisonCount > projectile.maxCollisonCount) {
-            frontEndPlayers[frontEndProjectiles[id].playerId].projectileCount--
-            delete frontEndProjectiles[id]
+            frontEndPlayers[frontEndProjectiles[id].playerId].projectileCount--;
+            delete frontEndProjectiles[id];
         }
         // 碰撞判定
         for (var i = 0; i < colliders.length; i++) {

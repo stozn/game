@@ -75,6 +75,18 @@ window.addEventListener('keyup', (event) => {
     }
 })
 
+window.addEventListener('mousemove', (event) => {
+    if (frontEndPlayers[socket.id]) {
+        const { clientX: x, clientY: y } = event;
+        const { innerWidth, innerHeight } = window;
+
+        const offsetX = x - innerWidth / 2;
+        const offsetY = y - innerHeight / 2;
+        keys.angle = Math.PI * 0.5 - Math.atan2(offsetY, offsetX);
+    }
+});
+
+
 document.querySelector('#usernameForm').addEventListener('submit', (event) => {
     event.preventDefault()
     if (!document.querySelector('#usernameInput').value) {

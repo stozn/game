@@ -132,8 +132,3 @@ class CircleCollider {
     }
 
 }
-
-module.exports = {
-    RectCollider,
-    CircleCollider
-}
