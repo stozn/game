@@ -1,3 +1,11 @@
+function darkenColor(color, l) {
+    console.log(color)
+    color = color.replace("50%", l.toString()+"%")
+    console.log(color)
+    return color;
+}
+
+
 class Player {
     constructor({ x, y, angle, color, username }) {
         this.x = x
@@ -45,14 +53,14 @@ class Player {
         c.fillStyle = this.color
         c.fill()
 
-        c.strokeStyle = 'black'
-        c.lineWidth = 4
+        c.strokeStyle = darkenColor(this.color, 15)
+        c.lineWidth = 2
         c.stroke()
 
         c.beginPath()
         c.arc(this.x, this.y, 15, 0, Math.PI * 2)
-        c.strokeStyle = 'black'
-        c.lineWidth = 4
+        c.strokeStyle = darkenColor(this.color, 15)
+        c.lineWidth = 2
         c.stroke()
 
         c.beginPath()
@@ -60,13 +68,17 @@ class Player {
         c.fillStyle = this.color
         c.fill()
 
-        c.strokeStyle = 'black'
-        c.lineWidth = 4
+        c.strokeStyle = darkenColor(this.color, 15)
+        // console.log(c.strokeStyle)
+        c.lineWidth = 2
         c.stroke()
 
-        c.fillStyle = "white"
+        c.restore()
+
+        c.fillStyle = this.color
         c.font = 18 + "px Arial";
-        c.fillText(this.username, this.x - 25, this.y - 40)
+        
+        c.fillText(this.username, this.x - 25, this.y - 60)
         c.restore()
     }
 
@@ -81,25 +93,25 @@ class Player {
     }
 
     drawBubbleMessage(text) {
-        var dialogPadding = 10;
+        var dialogPadding = 2;
         var dialogFontSize = 24;
         var offsetX = 40;
         var offsetY = -22;
 
         var textWidth = c.measureText(text).width;
-        var dialogWidth = textWidth + dialogPadding * 2;
+        var dialogWidth = (textWidth + dialogPadding) * 1.35;
         var dialogHeight = dialogFontSize + dialogPadding * 2;
 
-        c.fillStyle = "white";
+        c.fillStyle = darkenColor(this.color, 85);
         this.drawRoundedRect(this.x + offsetX, this.y + offsetY, dialogWidth, dialogHeight, 10);
         c.fill();
 
-        c.strokeStyle = "black";
+        c.strokeStyle = darkenColor(this.color, 15);
         c.lineWidth = 2;
         this.drawRoundedRect(this.x + offsetX, this.y + offsetY, dialogWidth, dialogHeight, 10);
         c.stroke();
 
-        c.fillStyle = "black";
+        c.fillStyle = darkenColor(this.color, 5);
         c.font = dialogFontSize + "px Arial";
         c.fillText(text, this.x + dialogPadding + offsetX, this.y + dialogPadding + dialogFontSize + offsetY - 3);
     }

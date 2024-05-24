@@ -75,6 +75,18 @@ window.addEventListener('keyup', (event) => {
     }
 })
 
+window.addEventListener('mousedown', (event) => {
+    if (frontEndPlayers[socket.id]) {
+       keys.w.pressd = true
+    }
+})
+
+window.addEventListener('mouseup', (event) => {
+    if (frontEndPlayers[socket.id]) {
+       keys.w.pressd = false
+    }
+})
+
 window.addEventListener('mousemove', (event) => {
     if (frontEndPlayers[socket.id]) {
         const { clientX: x, clientY: y } = event;
