@@ -7,7 +7,7 @@ class Collider {
 
   // Check if two colliders are colliding
   isColliding(x, y) {
-    
+
   }
 
   draw() {
@@ -39,16 +39,16 @@ class BorderCollider {
       x: ((this.height / this.width * (x - this.x) + this.y) > y ? 1 : 0),
       y: ((- this.height / this.width * (x - this.x - this.width) + this.y) > y ? 1 : 0)
     }
-    if(normal.x == 1){// 下方和右方
-      if(normal.y == 1){
-        return {x: 0, y: -1}//下方
+    if (normal.x == 1) {// 下方和右方
+      if (normal.y == 1) {
+        return { x: 0, y: -1 }//下方
       }
-      else return {x: 1, y: 0}//右方
-    } else{//左方和上方
-      if(normal.y == 1){
-        return {x: -1, y: 0}//左方
+      else return { x: 1, y: 0 }//右方
+    } else {//左方和上方
+      if (normal.y == 1) {
+        return { x: -1, y: 0 }//左方
       }
-      else return {x: 0, y: 1}//上方
+      else return { x: 0, y: 1 }//上方
     }
   }
 
@@ -71,7 +71,7 @@ class RectCollider {
     c.rect(this.x, this.y, this.width, this.height)
     c.fillStyle = 'white'
     c.fill()
-    
+
     c.strokeStyle = 'black'
     c.lineWidth = 4
     c.stroke()
@@ -82,16 +82,16 @@ class RectCollider {
       x: ((this.height / this.width * (x - this.x) + this.y) > y ? 1 : 0),
       y: ((- this.height / this.width * (x - this.x - this.width) + this.y) > y ? 1 : 0)
     }
-    if(normal.x == 1){// 下方和右方
-      if(normal.y == 1){
-        return {x: 0, y: -1}//下方
+    if (normal.x == 1) {// 下方和右方
+      if (normal.y == 1) {
+        return { x: 0, y: -1 }//下方
       }
-      else return {x: 1, y: 0}//右方
-    } else{//左方和上方
-      if(normal.y == 1){
-        return {x: -1, y: 0}//左方
+      else return { x: 1, y: 0 }//右方
+    } else {//左方和上方
+      if (normal.y == 1) {
+        return { x: -1, y: 0 }//左方
       }
-      else return {x: 0, y: 1}//上方
+      else return { x: 0, y: 1 }//上方
     }
   }
 
@@ -114,7 +114,7 @@ class CircleCollider {
     c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
     c.fillStyle = 'white'
     c.fill()
-    
+
     c.strokeStyle = 'black'
     c.lineWidth = 4
     c.stroke()

@@ -5,7 +5,7 @@ const http = require('http')
 const { emit } = require('process')
 const server = http.createServer(app)
 const { Server } = require('socket.io')
-const io = new Server(server, {pingInterval: 2000, pingTimeout: 5000})
+const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
 const port = 3000
 
@@ -38,20 +38,20 @@ const SPEED = 10
 
 io.on('connection', (socket) => {
   console.log('a user connected')
-  
-  socket.on('initGame', ({username, width, height}) => {
+
+  socket.on('initGame', ({ username, width, height }) => {
     const playerColor = Math.random() * 360
     var positionValid = false;
     var x = width * Math.random()
     var y = height * Math.random()
-    while(!positionValid){
+    while (!positionValid) {
       positionValid = true;
       colliders.forEach(element => {
-        if(element.isColliding(x, y)){
+        if (element.isColliding(x, y)) {
           positionValid = false;
         }
       })
-      if(!positionValid){
+      if (!positionValid) {
         x = width * Math.random()
         y = height * Math.random()
       }
@@ -76,15 +76,15 @@ io.on('connection', (socket) => {
     delete backEndPlayers[socket.id]
   })
 
-  socket.on('updatePlayers', ({x, y, angle}) => {
-    if(backEndPlayers[socket.id]){
+  socket.on('updatePlayers', ({ x, y, angle }) => {
+    if (backEndPlayers[socket.id]) {
       backEndPlayers[socket.id].x = x
       backEndPlayers[socket.id].y = y
       backEndPlayers[socket.id].angle = angle
     }
   })
 
-  socket.on('shoot', ({x, y, angle}) => {
+  socket.on('shoot', ({ x, y, angle }) => {
     const velocity = {
       x: SPEED * Math.sin(angle),
       y: SPEED * Math.cos(angle)
@@ -99,10 +99,10 @@ io.on('connection', (socket) => {
   })
 
   socket.on('hit', (playerId) => {
-    if(backEndPlayers[playerId]){
+    if (backEndPlayers[playerId]) {
       backEndPlayers[playerId].score++
     }
-    if(backEndPlayers[socket.id]){
+    if (backEndPlayers[socket.id]) {
       delete backEndPlayers[socket.id]
     }
     console.log('hit', playerId, socket.id)
@@ -116,7 +116,7 @@ io.on('connection', (socket) => {
       io.emit('updateChatMessages', backEndChatMessages)
     }, 6000)
     io.emit('updateChatMessages', backEndChatMessages)
-    io.emit('updateChatMessagePool', {id:socket.id, inputText})
+    io.emit('updateChatMessagePool', { id: socket.id, inputText })
   })
 })
 

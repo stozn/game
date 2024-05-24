@@ -73,13 +73,13 @@ socket.on('addProjectile', (backEndProjectile) => {
 })
 // only update position and angle of the players
 socket.on('updatePlayers', (backEndPlayers) => {
-  for(const id in backEndPlayers){
+  for (const id in backEndPlayers) {
     const backEndPlayer = backEndPlayers[id]
 
-    if(!frontEndPlayers[id]){
+    if (!frontEndPlayers[id]) {
       frontEndPlayers[id] = new Player({
-        x:backEndPlayer.x,
-        y:backEndPlayer.y,
+        x: backEndPlayer.x,
+        y: backEndPlayer.y,
         angle: backEndPlayer.angle,
         color: backEndPlayer.color,
         username: backEndPlayer.username
@@ -90,8 +90,8 @@ socket.on('updatePlayers', (backEndPlayers) => {
       keys.s.pressd = false
       keys.d.pressd = false
       document.querySelector('#playerLabels').innerHTML +=
-      `<div data-id="${id}" data-score="${backEndPlayer.score}">${backEndPlayer.username}: ${backEndPlayer.score}</div>`
-    } else{
+        `<div data-id="${id}" data-score="${backEndPlayer.score}">${backEndPlayer.username}: ${backEndPlayer.score}</div>`
+    } else {
       document.querySelector(`div[data-id="${id}"]`).innerHTML = `${backEndPlayer.username}: ${backEndPlayer.score}`
       document.querySelector(`div[data-id="${id}"]`).setAttribute('data-score', backEndPlayer.score)
       const parenetDiv = document.querySelector('#playerLabels')
@@ -108,10 +108,10 @@ socket.on('updatePlayers', (backEndPlayers) => {
         parenetDiv.appendChild(div)
       })
 
-      if(id === socket.id){
+      if (id === socket.id) {
         // if the player is the current player
 
-      } else{
+      } else {
         // for all other players
         frontEndPlayers[id].angle = backEndPlayer.angle
 
@@ -121,18 +121,18 @@ socket.on('updatePlayers', (backEndPlayers) => {
           duration: 0.033,
           ease: 'linear'
         })
-        
+
       }
     }
   }
 
   // delete frontend players
-  for(const id in frontEndPlayers){
-    if(!backEndPlayers[id]){
+  for (const id in frontEndPlayers) {
+    if (!backEndPlayers[id]) {
       const divToDelete = document.querySelector(`div[data-id="${id}"]`)
       divToDelete.parentNode.removeChild(divToDelete)
 
-      if(id===socket.id){
+      if (id === socket.id) {
         // if the player is the current player
         document.querySelector('#usernameForm').style.display = 'block'
       }
@@ -147,15 +147,15 @@ socket.on('updateChatMessages', (backEndChatMessages) => {
 })
 
 let messagePoolTimer
-socket.on('updateChatMessagePool', ({id, inputText}) => {
-  frontEndChatMessagePool.push({id, inputText});
+socket.on('updateChatMessagePool', ({ id, inputText }) => {
+  frontEndChatMessagePool.push({ id, inputText });
   document.getElementById("messageList").innerHTML += `\n${frontEndPlayers[id].username}: ${inputText}`;// note: innerText will not parse html tags into text
   document.getElementById("messageList").style.display = "block";
-  
+
   const messageList = document.getElementById("messageList");
   messageList.scrollTop = messageList.scrollHeight;
   clearTimeout(messagePoolTimer);
-  messagePoolTimer = setTimeout(() => {  
+  messagePoolTimer = setTimeout(() => {
     document.getElementById("messageList").style.display = "none";
   }, 5000);
 })
@@ -166,8 +166,8 @@ function animate() {
     x: 0,
     y: 0
   }
-  for(const id in frontEndPlayers){
-    if(id === socket.id){
+  for (const id in frontEndPlayers) {
+    if (id === socket.id) {
       playerPosition = {
         x: frontEndPlayers[id].x,
         y: frontEndPlayers[id].y,
@@ -179,12 +179,12 @@ function animate() {
   c.fillStyle = 'rgba(32, 32, 32, 1)'
   c.fillRect(-2500, -2500, 5000, 5000)
 
-  for(const id in frontEndProjectiles){
+  for (const id in frontEndProjectiles) {
     const projectile = frontEndProjectiles[id]
     projectile.draw()
   }
-  
-  for(const id in frontEndPlayers){
+
+  for (const id in frontEndPlayers) {
     const player = frontEndPlayers[id]
     player.draw()
   }
@@ -193,7 +193,7 @@ function animate() {
     element.draw()
   });
 
-  for(const id in frontEndChatMessages){
+  for (const id in frontEndChatMessages) {
     const frontEndChatMessage = frontEndChatMessages[id];
     frontEndPlayers[id].drawBubbleMessage(frontEndChatMessage);
   }
@@ -221,7 +221,7 @@ const SPEED = 5
 const RADIUS = 40
 setInterval(() => {
   // update projectiles
-  for(const id in frontEndProjectiles){
+  for (const id in frontEndProjectiles) {
     const projectile = frontEndProjectiles[id]
     const prePosition = {
       x: projectile.x,
@@ -229,13 +229,13 @@ setInterval(() => {
     }
     projectile.update()
     // 边界判定（附带碰撞次数判定）
-    if(projectile.x < -map.width / 2 || projectile.x > map.width / 2 || projectile.y < -map.height / 2 || projectile.y > map.height / 2 || projectile.collisonCount > projectile.maxCollisonCount){
+    if (projectile.x < -map.width / 2 || projectile.x > map.width / 2 || projectile.y < -map.height / 2 || projectile.y > map.height / 2 || projectile.collisonCount > projectile.maxCollisonCount) {
       frontEndPlayers[frontEndProjectiles[id].playerId].projectileCount--
       delete frontEndProjectiles[id]
     }
     // 碰撞判定
-    for(var i = 0; i < colliders.length; i++){
-      if(colliders[i].isColliding(projectile.x, projectile.y)){// 子弹碰撞到障碍物
+    for (var i = 0; i < colliders.length; i++) {
+      if (colliders[i].isColliding(projectile.x, projectile.y)) {// 子弹碰撞到障碍物
         projectile.collisonCount++
         const preVelocity = {
           x: projectile.velocity.x,
@@ -250,13 +250,13 @@ setInterval(() => {
       }
     }
     // 命中判定
-    for(const frontEndPlayerId in frontEndPlayers){
+    for (const frontEndPlayerId in frontEndPlayers) {
       const frontEndPlayer = frontEndPlayers[frontEndPlayerId]
       const distance = Math.hypot(projectile.x - frontEndPlayer.x, projectile.y - frontEndPlayer.y)
-      if(distance < RADIUS){
+      if (distance < RADIUS) {
         frontEndPlayers[frontEndProjectiles[id].playerId].projectileCount--
         delete frontEndProjectiles[id]
-        if(frontEndPlayerId === socket.id){
+        if (frontEndPlayerId === socket.id) {
           socket.emit('hit', projectile.playerId)
           break
         }
@@ -264,7 +264,7 @@ setInterval(() => {
     }
   }
   // update playerInputs
-  if(frontEndPlayers[socket.id]){
+  if (frontEndPlayers[socket.id]) {
     const prePosition = {
       x: frontEndPlayers[socket.id].x,
       y: frontEndPlayers[socket.id].y,
@@ -273,15 +273,14 @@ setInterval(() => {
     frontEndPlayers[socket.id].update(keys)
     // 碰撞判定
     colliders.forEach(element => {
-      if(element.isColliding(frontEndPlayers[socket.id].x + 25 * Math.cos(frontEndPlayers[socket.id].angle) - 35 * Math.sin(frontEndPlayers[socket.id].angle),
-      frontEndPlayers[socket.id].y + 25 * Math.sin(frontEndPlayers[socket.id].angle) + 35 * Math.cos(frontEndPlayers[socket.id].angle)) ||
-      element.isColliding(frontEndPlayers[socket.id].x - 25 * Math.cos(frontEndPlayers[socket.id].angle) - 35 * Math.sin(frontEndPlayers[socket.id].angle),
-      frontEndPlayers[socket.id].y - 25 * Math.sin(frontEndPlayers[socket.id].angle) + 35 * Math.cos(frontEndPlayers[socket.id].angle)) ||
-      element.isColliding(frontEndPlayers[socket.id].x + 25 * Math.cos(frontEndPlayers[socket.id].angle) + 35 * Math.sin(frontEndPlayers[socket.id].angle),
-      frontEndPlayers[socket.id].y + 25 * Math.sin(frontEndPlayers[socket.id].angle) - 35 * Math.cos(frontEndPlayers[socket.id].angle)) ||
-      element.isColliding(frontEndPlayers[socket.id].x - 25 * Math.cos(frontEndPlayers[socket.id].angle) + 35 * Math.sin(frontEndPlayers[socket.id].angle),
-      frontEndPlayers[socket.id].y - 25 * Math.sin(frontEndPlayers[socket.id].angle) - 35 * Math.cos(frontEndPlayers[socket.id].angle)))
-      {
+      if (element.isColliding(frontEndPlayers[socket.id].x + 25 * Math.cos(frontEndPlayers[socket.id].angle) - 35 * Math.sin(frontEndPlayers[socket.id].angle),
+        frontEndPlayers[socket.id].y + 25 * Math.sin(frontEndPlayers[socket.id].angle) + 35 * Math.cos(frontEndPlayers[socket.id].angle)) ||
+        element.isColliding(frontEndPlayers[socket.id].x - 25 * Math.cos(frontEndPlayers[socket.id].angle) - 35 * Math.sin(frontEndPlayers[socket.id].angle),
+          frontEndPlayers[socket.id].y - 25 * Math.sin(frontEndPlayers[socket.id].angle) + 35 * Math.cos(frontEndPlayers[socket.id].angle)) ||
+        element.isColliding(frontEndPlayers[socket.id].x + 25 * Math.cos(frontEndPlayers[socket.id].angle) + 35 * Math.sin(frontEndPlayers[socket.id].angle),
+          frontEndPlayers[socket.id].y + 25 * Math.sin(frontEndPlayers[socket.id].angle) - 35 * Math.cos(frontEndPlayers[socket.id].angle)) ||
+        element.isColliding(frontEndPlayers[socket.id].x - 25 * Math.cos(frontEndPlayers[socket.id].angle) + 35 * Math.sin(frontEndPlayers[socket.id].angle),
+          frontEndPlayers[socket.id].y - 25 * Math.sin(frontEndPlayers[socket.id].angle) - 35 * Math.cos(frontEndPlayers[socket.id].angle))) {
         frontEndPlayers[socket.id].x = prePosition.x
         frontEndPlayers[socket.id].y = prePosition.y
         frontEndPlayers[socket.id].angle = prePosition.angle

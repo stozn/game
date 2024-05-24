@@ -1,6 +1,6 @@
 addEventListener('click', (event) => {
-  if(!frontEndPlayers[socket.id]) return
-  if(frontEndPlayers[socket.id].projectileCount >= frontEndPlayers[socket.id].maxProjectileCount) return
+  if (!frontEndPlayers[socket.id]) return
+  if (frontEndPlayers[socket.id].projectileCount >= frontEndPlayers[socket.id].maxProjectileCount) return
   // console.log(`${frontEndPlayers[socket.id].projectileCount}`)
   frontEndPlayers[socket.id].projectileCount++
   socket.emit('shoot', {
@@ -12,9 +12,9 @@ addEventListener('click', (event) => {
 
 let inputing = false;
 window.addEventListener('keydown', (event) => {
-  if(frontEndPlayers[socket.id]){
-    if(!inputing){
-      switch(event.code){
+  if (frontEndPlayers[socket.id]) {
+    if (!inputing) {
+      switch (event.code) {
         case 'KeyW':
           keys.w.pressd = true
           break
@@ -29,16 +29,16 @@ window.addEventListener('keydown', (event) => {
           break
       }
     }
-    switch(event.code){
+    switch (event.code) {
       case 'Enter':
-        if(document.getElementById("textInput").style.display === "none"){
+        if (document.getElementById("textInput").style.display === "none") {
           document.getElementById("textInput").style.display = "block";
           document.getElementById("messageList").style.display = "block";
           document.getElementById("textInput").focus();
           inputing = true;
-        } else{
+        } else {
           var inputText = document.getElementById("textInput").value;
-          if(inputText.length > 0){
+          if (inputText.length > 0) {
             // console.log("Input:" + inputText);
             socket.emit('chatPublic', inputText);
           }
@@ -58,8 +58,8 @@ window.addEventListener('keydown', (event) => {
 })
 
 window.addEventListener('keyup', (event) => {
-  if(frontEndPlayers[socket.id]){
-    switch(event.code){
+  if (frontEndPlayers[socket.id]) {
+    switch (event.code) {
       case 'KeyW':
         keys.w.pressd = false
         break
@@ -77,8 +77,8 @@ window.addEventListener('keyup', (event) => {
 
 document.querySelector('#usernameForm').addEventListener('submit', (event) => {
   event.preventDefault()
-  if(!document.querySelector('#usernameInput').value) {
-    document.querySelector('#usernameInput').placeholder='Please enter a username'
+  if (!document.querySelector('#usernameInput').value) {
+    document.querySelector('#usernameInput').placeholder = 'Please enter a username'
     return
   }
   document.querySelector('#usernameForm').style.display = 'none'

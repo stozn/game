@@ -1,5 +1,5 @@
 class Player {
-  constructor({x, y, angle, color, username}) {
+  constructor({ x, y, angle, color, username }) {
     this.x = x
     this.y = y
     this.angle = angle
@@ -9,23 +9,23 @@ class Player {
     this.maxProjectileCount = 10
   }
   update(keys) {
-    if(keys.w.pressd){
+    if (keys.w.pressd) {
       this.x += SPEED * Math.sin(this.angle)
       this.y += SPEED * Math.cos(this.angle)
     }
-    if(keys.a.pressd){
+    if (keys.a.pressd) {
       this.angle += Math.PI / 180 * 5
-      if(this.angle > Math.PI * 2){
+      if (this.angle > Math.PI * 2) {
         this.angle -= Math.PI * 2
       }
     }
-    if(keys.s.pressd){
+    if (keys.s.pressd) {
       this.x -= SPEED * Math.sin(this.angle)
       this.y -= SPEED * Math.cos(this.angle)
     }
-    if(keys.d.pressd){
+    if (keys.d.pressd) {
       this.angle -= Math.PI / 180 * 5
-      if(this.angle < 0){
+      if (this.angle < 0) {
         this.angle += Math.PI * 2
       }
     }
@@ -41,7 +41,7 @@ class Player {
     c.rect(this.x - 25, this.y - 35, 50, 70)
     c.fillStyle = this.color
     c.fill()
-    
+
     c.strokeStyle = 'black'
     c.lineWidth = 4
     c.stroke()
@@ -76,26 +76,26 @@ class Player {
     c.arcTo(x, y, x + width, y, radius);
     c.closePath();
   }
-  
+
   drawBubbleMessage(text) {
     var dialogPadding = 10;
     var dialogFontSize = 24;
     var offsetX = 40;
     var offsetY = -22;
-    
+
     var textWidth = c.measureText(text).width;
     var dialogWidth = textWidth + dialogPadding * 2;
     var dialogHeight = dialogFontSize + dialogPadding * 2;
-  
+
     c.fillStyle = "white";
     this.drawRoundedRect(this.x + offsetX, this.y + offsetY, dialogWidth, dialogHeight, 10);
     c.fill();
-  
+
     c.strokeStyle = "black";
     c.lineWidth = 2;
     this.drawRoundedRect(this.x + offsetX, this.y + offsetY, dialogWidth, dialogHeight, 10);
     c.stroke();
-  
+
     c.fillStyle = "black";
     c.font = dialogFontSize + "px Arial";
     c.fillText(text, this.x + dialogPadding + offsetX, this.y + dialogPadding + dialogFontSize + offsetY - 3);
