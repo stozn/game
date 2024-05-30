@@ -7,7 +7,7 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
-const port = 80
+const port = 8080
 
 app.use(express.static('public'))
 
@@ -94,6 +94,14 @@ io.on('connection', (socket) => {
         }
         console.log('hit', playerId, socket.id)
     })
+
+    socket.on('kill', (playerId) => {
+        if (backEndPlayers[socket.id]) {
+            delete backEndPlayers[socket.id]
+        }
+        console.log('kill', playerId, socket.id)
+    })
+
 
     socket.on('chatPublic', (inputText) => {
         backEndChatMessages[socket.id] = inputText;

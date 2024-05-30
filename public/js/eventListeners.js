@@ -27,6 +27,15 @@ window.addEventListener('keydown', (event) => {
                 case 'KeyD':
                     keys.d.pressd = true
                     break
+                case 'KeyK':
+                    let username = frontEndPlayers[socket.id].username;
+                    socket.emit('kill', socket.id);
+                    socket.emit('initGame', {
+                        username,
+                        width: canvas.width,
+                        height: canvas.height
+                    })
+                    break
             }
         }
         switch (event.code) {

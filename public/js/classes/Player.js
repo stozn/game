@@ -1,7 +1,5 @@
 function darkenColor(color, l) {
-    console.log(color)
     color = color.replace("50%", l.toString()+"%")
-    console.log(color)
     return color;
 }
 
@@ -69,7 +67,6 @@ class Player {
         c.fill()
 
         c.strokeStyle = darkenColor(this.color, 15)
-        // console.log(c.strokeStyle)
         c.lineWidth = 2
         c.stroke()
 
@@ -79,7 +76,7 @@ class Player {
         c.font = 18 + "px Arial";
         
         c.fillText(this.username, this.x - 25, this.y - 60)
-        c.restore()
+        // c.restore()
     }
 
     drawRoundedRect(x, y, width, height, radius) {
