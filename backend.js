@@ -7,7 +7,7 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server, { pingInterval: 2000, pingTimeout: 5000 })
 
-const port = 8080
+const port = 8081
 
 app.use(express.static('public'))
 
@@ -16,40 +16,21 @@ app.get('/', (req, res) => {
 })
 
 const backEndPlayers = {}
-const backEndChatMessages = {}
-const chatMessageBubbleTimers = {}
 
-const colliders = []
-
-const SPEED = 10
 
 io.on('connection', (socket) => {
     console.log('a user connected')
 
-    socket.on('initGame', ({ username, width, height }) => {
+    socket.on('initGame', ({ width, height }) => {
         const playerColor = Math.random() * 360
         var positionValid = false;
         var x = width * Math.random()
         var y = height * Math.random()
-        while (!positionValid) {
-            positionValid = true;
-            colliders.forEach(element => {
-                if (element.isColliding(x, y)) {
-                    positionValid = false;
-                }
-            })
-            if (!positionValid) {
-                x = width * Math.random()
-                y = height * Math.random()
-            }
-        }
+        
         backEndPlayers[socket.id] = {
             x,
             y,
-            angle: 0,
             color: `hsl(${playerColor}, 100%, 50%)`,
-            score: 0,
-            username
         }
 
         backEndPlayers[socket.id].canvas = {
@@ -71,54 +52,16 @@ io.on('connection', (socket) => {
         }
     })
 
-    socket.on('shoot', ({ x, y, angle }) => {
-        const velocity = {
-            x: SPEED * Math.sin(angle),
-            y: SPEED * Math.cos(angle)
-        }
-        const backEndProjectile = {
-            x,
-            y,
-            velocity,
-            playerId: socket.id
-        }
-        io.emit('addProjectile', backEndProjectile)
-    })
-
-    socket.on('hit', (playerId) => {
-        if (backEndPlayers[playerId]) {
-            backEndPlayers[playerId].score++
-        }
-        if (backEndPlayers[socket.id]) {
-            delete backEndPlayers[socket.id]
-        }
-        console.log('hit', playerId, socket.id)
-    })
-
     socket.on('kill', (playerId) => {
         if (backEndPlayers[socket.id]) {
             delete backEndPlayers[socket.id]
         }
         console.log('kill', playerId, socket.id)
     })
-
-
-    socket.on('chatPublic', (inputText) => {
-        backEndChatMessages[socket.id] = inputText;
-        clearTimeout(chatMessageBubbleTimers[socket.id])
-        chatMessageBubbleTimers[socket.id] = setTimeout(() => {
-            delete backEndChatMessages[socket.id]
-            io.emit('updateChatMessages', backEndChatMessages)
-        }, 6000)
-        io.emit('updateChatMessages', backEndChatMessages)
-        io.emit('updateChatMessagePool', { id: socket.id, inputText })
-    })
 })
 
-// backend ticker
 setInterval(() => {
     io.emit('updatePlayers', backEndPlayers)
-    io.emit('updateChatMessages', backEndChatMessages)
 }, 50)
 
 server.listen(port, () => {
